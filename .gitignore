@@ -1,0 +1,26 @@
+# Terraform state файлы
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+
+# Директория .terraform
+.terraform/
+.terraform.lock.hcl
+
+# Файлы с переменными (могут содержать секреты)
+*.tfvars
+!terraform.tfvars.example
+
+# Crash log файлы
+crash.log
+crash.*.log
+
+# Переопределения
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI конфигурации
+.terraformrc
+terraform.rc
