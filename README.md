@@ -21,8 +21,8 @@
 - Создана ВМ `netology-develop-platform-web`
 - Внешний IP: `89.169.152.149`
 - Скриншоты:
-  - [ВМ в консоли Yandex Cloud](screenshots/task1-vm-console.png)
-  - [Проверка IP через curl](screenshots/task1-ssh-curl.png)
+  - ![ВМ в консоли Yandex Cloud](screenshots/screenshot-ssh-curl.png)
+  - ![Проверка IP через curl](screenshots/task1-ssh-curl.png)
 
 #### Ответы на вопросы
 
