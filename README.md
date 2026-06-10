@@ -60,16 +60,36 @@ terraform plan показал: "No changes. Your infrastructure matches the conf
 
 ### Задание 3: Создание второй ВМ
 
-- [ ] Создан файл `vms_platform.tf`
-- [ ] Создана вторая ВМ `netology-develop-platform-db`
-- [ ] Параметры: cores=2, memory=2, core_fraction=20, зона `ru-central1-b`
+- [x] Создан файл `vms_platform.tf`
+- [x] Перенесены переменные первой ВМ с префиксом `vm_web_`
+- [x] Создана вторая ВМ `netology-develop-platform-db`
+- [x] Параметры: cores=2, memory=2, core_fraction=20, зона `ru-central1-b`
+- [x] Создана вторая подсеть `develop-b` в зоне `ru-central1-b` (CIDR: 10.0.2.0/24)
+
+**Результат:**
+- Создана ВМ `netology-develop-platform-db`
+- Внешний IP: `51.250.106.23`
+- Зона доступности: `ru-central1-b`
+- Платформа: `standard-v3`, 2 ядра, 2 ГБ RAM
+
+**Файлы:**
+- `vms_platform.tf` — переменные для обеих ВМ (vm_web_* и vm_db_*)
+- `main.tf` — добавлен ресурс второй подсети и ВМ
 
 ---
 
 ### Задание 4: Настройка outputs
 
-- [ ] Создан файл `outputs.tf`
-- [ ] Настроены outputs для instance_name, external_ip, fqdn обеих ВМ
+- [x] Создан файл `outputs.tf`
+- [x] Настроены outputs для instance_name, external_ip, fqdn обеих ВМ
+- [x] Использована интерполяция (без хардкода)
+
+**Результат:**
+- web_vm_info: external_ip=89.169.152.149, fqdn=fhmq1sodo5t1vuuf1q69.auto.internal
+- db_vm_info: external_ip=51.250.106.23, fqdn=epdo27n8kmi5bvcack44.auto.internal
+
+**Скриншот:**
+- ![Вывод terraform outputs](screenshots/task4-terraform-outputs.png)
 
 ---
 
