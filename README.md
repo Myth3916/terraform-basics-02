@@ -43,12 +43,17 @@
 
 ### Задание 2: Замена хардкода на переменные
 
-- [ ] Заменены хардкод-значения для ресурсов на переменные
-- [ ] Добавлены переменные с префиксом `vm_web_`
-- [ ] Проверено через `terraform plan` (изменений быть не должно)
+- [x] Заменены хардкод-значения для ресурсов на переменные
+- [x] Добавлены переменные с префиксом `vm_web_`
+- [x] Проверено через `terraform plan` (изменений нет)
+
+**Результат:**
+```
+terraform plan показал: "No changes. Your infrastructure matches the configuration."
+```
 
 **Файлы:**
-- `variables.tf` — объявлены переменные для ВМ
+- `variables.tf` — добавлены переменные: vm_web_name, vm_web_platform_id, vm_web_cores, vm_web_memory, vm_web_core_fraction, vm_web_image_family
 - `main.tf` — используются переменные вместо хардкода
 
 ---
