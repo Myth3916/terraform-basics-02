@@ -211,16 +211,22 @@ var.test[0]["dev1"][0]
 
 ```
 terraform-basics-02/
-├── main.tf              # Основные ресурсы (ВМ, сеть)
+├── main.tf              # Основные ресурсы (ВМ, сеть, подсети)
 ├── variables.tf         # Объявление переменных
-├── outputs.tf           # Выводы после apply
-├── versions.tf          # Версии Terraform и провайдеров
-├── providers.tf         # Конфигурация провайдеров
-├── locals.tf            # Локальные переменные
-├── console.tf           # Для задания 7*
-├── terraform.tfvars     # Значения переменных
-├── .gitignore           # Исключения для Git
-└── README.md            # Этот файл
+├── outputs.tf           # Выводы после apply (instance_name, external_ip, fqdn)
+├── providers.tf         # Конфигурация провайдера Yandex Cloud + версии
+├── locals.tf            # Локальные переменные с интерполяцией
+├── vms_platform.tf      # Переменные для ВМ (vm_web_*, vm_db_*)
+├── nat.tf               # NAT Gateway и таблица маршрутизации (Задание 9*)
+├── console.tf           # Локальные переменные для задания 7*
+├── terraform.tfvars     # Значения переменных (cloud_id, folder_id, vms_resources)
+├── .gitignore           # Исключения для Git (*.tfstate, .terraform/)
+├── README.md            # Документация и отчет
+└── screenshots/         # Скриншоты выполненных заданий
+    ├── task1-vm-console.png
+    ├── task1-ssh-curl.png
+    ├── task4-outputs.png
+    └── task9-serial-console-nat.png
 ```
 
 ## Как запустить
