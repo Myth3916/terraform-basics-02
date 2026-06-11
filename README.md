@@ -202,7 +202,7 @@ var.test[0]["dev1"][0]
 - ВМ может скачивать обновления и обращаться к внешним API
 
 **Скриншот:**
-- ![Проверка NAT через Serial Console](screenshots/task9-nat-check.png)
+- ![Проверка NAT через Serial Console](screenshots/task9-serial-console-nat.png)
 
 
 ---
