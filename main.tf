@@ -6,6 +6,7 @@ resource "yandex_vpc_subnet" "develop" {
   zone           = var.default_zone
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = var.default_cidr
+  route_table_id = yandex_vpc_route_table.nat_route.id 
 }
 
 
@@ -38,7 +39,7 @@ resource "yandex_compute_instance" "platform" {
   
   network_interface {
     subnet_id = yandex_vpc_subnet.develop.id
-    nat       = true
+    nat       = false
   }
 
   metadata = merge(var.metadata, {
@@ -52,6 +53,7 @@ resource "yandex_vpc_subnet" "develop-b" {
   zone           = "ru-central1-b"
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = ["10.0.2.0/24"] # Обязательно другой CIDR, не пересекающийся с первой подсетью!
+  route_table_id = yandex_vpc_route_table.nat_route.id
 }
 
 # Создаем вторую ВМ (базу данных)
@@ -80,7 +82,7 @@ resource "yandex_compute_instance" "platform-db" {
   
   network_interface {
     subnet_id = yandex_vpc_subnet.develop-b.id
-    nat       = true
+    nat       = false
   }
 
   metadata = merge(var.metadata, {

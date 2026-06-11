@@ -123,24 +123,87 @@ terraform plan показал: "No changes. Your infrastructure matches the conf
 
 
 ---
-
 ### Задание 7*: Работа с terraform console
 
-- [ ] Выполнены задания с переменными test_list, test_map, servers
+- [x] Изучен файл console.tf
+- [x] Выполнены все задания в terraform console
+
+**Результаты:**
+
+1. **Второй элемент списка test_list:**
+   ```hcl
+   local.test_list[1]
+   # Вывод: "staging"
+   ```
+
+2. **Длина списка test_list:**
+   ```hcl
+   length(local.test_list)
+   # Вывод: 3
+   ```
+
+3. **Значение ключа admin из map test_map:**
+   ```hcl
+   local.test_map["admin"]
+   # Вывод: "John"
+   ```
+
+4. **Сложная интерполяция:**
+   ```hcl
+   "${local.test_map.admin} is admin for production server based on OS ${local.servers.production.image} with ${local.servers.production.cpu} vcpu, ${local.servers.production.ram} ram and ${length(local.servers.production.disks)} virtual disks"
+   # Вывод: "John is admin for production server based on OS ubuntu-20-04 with 10 vcpu, 40 ram and 4 virtual disks"
+   ```
+
 
 ---
 
 ### Задание 8*: Сложная структура данных
 
-- [ ] Описана переменная test с типом list of maps
-- [ ] Выполнено извлечение данных через terraform console
+- [x] Описана переменная `test` с типом `list(map(list(string)))`
+- [x] Значение вынесено в `terraform.tfvars`
+- [x] Выполнено извлечение данных через terraform console
+
+**Результат:**
+
+**Объявление переменной (variables.tf):**
+```hcl
+variable "test" {
+  type = list(map(list(string)))
+  description = "Complex data structure for task 8*"
+  default = []
+}
+```
+
+**Извлечение SSH-команды:**
+```hcl
+var.test[0]["dev1"][0]
+# Вывод: "ssh -o 'StrictHostKeyChecking=no' ubuntu@62.84.124.117"
+```
+
+**Структура данных:**
+- `list` — список из 3 элементов
+- `map` — каждый элемент содержит имя сервера (dev1, dev2, prod1)
+- `list(string)` — значение содержит SSH-команду и внутренний IP
 
 ---
 
 ### Задание 9*: Настройка NAT Gateway
 
-- [ ] Настроен nat_gateway для ВМ без внешних IP
-- [ ] Проверен доступ в интернет через serial console
+- [x] Создан NAT Gateway (`yandex_vpc_gateway.nat`)
+- [x] Создана таблица маршрутизации с маршрутом через NAT
+- [x] Таблица маршрутизации привязана к обеим подсетям
+- [x] У ВМ убраны внешние IP (`nat = false`)
+- [x] Проверен доступ в интернет через Serial Console
+
+**Результат:**
+- ВМ `develop-ru-central1-a-web` имеет внутренний IP `10.0.1.27`
+- При выходе в интернет используется IP NAT Gateway: `178.154.236.151`
+- ВМ недоступна из интернета напрямую (безопасно!)
+- ВМ может скачивать обновления и обращаться к внешним API
+
+**Скриншот:**
+- ![Проверка NAT через Serial Console](screenshots/task9-nat-check.png)
+
 
 ---
 

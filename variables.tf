@@ -87,3 +87,10 @@ variable "metadata" {
     # SSH-ключ будет добавлен динамически
   }
 }
+
+### Переменная для задания 8* (сложная структура)
+variable "test" {
+  type = list(map(list(string)))
+  description = "Complex data structure for task 8*"
+  default = []
+}
