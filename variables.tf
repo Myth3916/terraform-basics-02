@@ -37,3 +37,53 @@ variable "vms_ssh_root_key" {
   description = "ssh-keygen -t ed25519"
 }
 
+### Переменная с ресурсами для всех ВМ (map of objects)
+variable "vms_resources" {
+  type = map(object({
+    platform_id    = string
+    cores          = number
+    memory         = number
+    core_fraction  = number
+    hdd_size       = number
+    hdd_type       = string
+    zone           = string
+    image_family   = string
+  }))
+  
+  description = "Resources configuration for all VMs"
+  
+  default = {
+    web = {
+      platform_id   = "standard-v3"
+      cores         = 2
+      memory        = 1
+      core_fraction = 20
+      hdd_size      = 10
+      hdd_type      = "network-hdd"
+      zone          = "ru-central1-a"
+      image_family  = "ubuntu-2004-lts"
+    }
+    db = {
+      platform_id   = "standard-v3"
+      cores         = 2
+      memory        = 2
+      core_fraction = 20
+      hdd_size      = 10
+      hdd_type      = "network-ssd"
+      zone          = "ru-central1-b"
+      image_family  = "ubuntu-2004-lts"
+    }
+  }
+}
+
+### Общая переменная metadata для всех ВМ
+variable "metadata" {
+  type = map(string)
+  
+  description = "Common metadata for all VMs"
+  
+  default = {
+    serial-port-enable = "1"
+    # SSH-ключ будет добавлен динамически
+  }
+}

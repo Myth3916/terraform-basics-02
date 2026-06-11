@@ -10,34 +10,40 @@ resource "yandex_vpc_subnet" "develop" {
 
 
 data "yandex_compute_image" "ubuntu" {
-  family = var.vm_web_image_family # Было "ubuntu-2004-lts"
+  family = var.vms_resources["web"].image_family # Было  var.vm_web_image_family
 }
+
 resource "yandex_compute_instance" "platform" {
-  name        = var.vm_web_name        # Было "netology-develop-platform-web"
-  platform_id = var.vm_web_platform_id # Было "standard-v3"
+  name        = local.vm_web_name
+  platform_id = var.vms_resources["web"].platform_id
+  zone        = var.vms_resources["web"].zone
+  
   resources {
-    cores         = var.vm_web_cores         # Было 2
-    memory        = var.vm_web_memory        # Было 1
-    core_fraction = var.vm_web_core_fraction # Было 20
+    cores         = var.vms_resources["web"].cores
+    memory        = var.vms_resources["web"].memory
+    core_fraction = var.vms_resources["web"].core_fraction
   }
+  
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.image_id
+      image_id    = data.yandex_compute_image.ubuntu.image_id
+      size        = var.vms_resources["web"].hdd_size
+      type        = var.vms_resources["web"].hdd_type
     }
   }
+  
   scheduling_policy {
     preemptible = true
   }
+  
   network_interface {
     subnet_id = yandex_vpc_subnet.develop.id
     nat       = true
   }
 
-  metadata = {
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
-  }
-
+  metadata = merge(var.metadata, {
+    ssh-keys = "ubuntu:${var.vms_ssh_root_key}"
+  })
 }
 
 # Создаем вторую подсеть в зоне ru-central1-b
@@ -50,19 +56,21 @@ resource "yandex_vpc_subnet" "develop-b" {
 
 # Создаем вторую ВМ (базу данных)
 resource "yandex_compute_instance" "platform-db" {
-  name        = var.vm_db_name
-  platform_id = var.vm_db_platform_id
-  zone        = "ru-central1-b" # Явно указываем зону
+  name        = local.vm_db_name
+  platform_id = var.vms_resources["db"].platform_id
+  zone        = var.vms_resources["db"].zone
   
   resources {
-    cores         = var.vm_db_cores
-    memory        = var.vm_db_memory
-    core_fraction = var.vm_db_core_fraction
+    cores         = var.vms_resources["db"].cores
+    memory        = var.vms_resources["db"].memory
+    core_fraction = var.vms_resources["db"].core_fraction
   }
   
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.image_id
+      image_id    = data.yandex_compute_image.ubuntu.image_id
+      size        = var.vms_resources["db"].hdd_size
+      type        = var.vms_resources["db"].hdd_type
     }
   }
   
@@ -71,12 +79,11 @@ resource "yandex_compute_instance" "platform-db" {
   }
   
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop-b.id # Подключаем к новой подсети
+    subnet_id = yandex_vpc_subnet.develop-b.id
     nat       = true
   }
 
-  metadata = {
-    serial-port-enable = 1
-    ssh-keys           = "ubuntu:${var.vms_ssh_root_key}"
-  }
+  metadata = merge(var.metadata, {
+    ssh-keys = "ubuntu:${var.vms_ssh_root_key}"
+  })
 }
